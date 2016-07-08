@@ -3,6 +3,7 @@ package com.fortysevendeg.scala.architecture.ui.main
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.RecyclerView
 import android.view.{LayoutInflater, View, ViewGroup}
+import com.fortysevendeg.architecture.ui.main.holders.ImageViewHolder
 import com.fortysevendeg.scala.architecture.R
 import macroid.ActivityContextWrapper
 
