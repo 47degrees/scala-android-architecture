@@ -6,14 +6,9 @@ import android.view.{LayoutInflater, View, ViewGroup}
 import com.fortysevendeg.scala.architecture.R
 import macroid.ActivityContextWrapper
 
-class ImageListAdapter(implicit context: ActivityContextWrapper)
+case class ImageListAdapter(images: Seq[ImageData])(implicit context: ActivityContextWrapper)
     extends RecyclerView.Adapter[ImageViewHolder]
     with View.OnClickListener {
-
-  val images: Seq[ImageData] = 1 to 10 map {
-    i =>
-      ImageData(s"Item $i", s"http://lorempixel.com/500/500/animals/$i")
-  }
 
   override def onCreateViewHolder(parent: ViewGroup, i: Int): ImageViewHolder = {
     val v = LayoutInflater.from(parent.getContext).inflate(R.layout.image_item, parent, false)

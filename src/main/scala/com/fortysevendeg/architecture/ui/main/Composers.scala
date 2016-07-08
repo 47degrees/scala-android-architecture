@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.{GridLayoutManager, RecyclerView}
 import android.view.View
+import com.fortysevendeg.architecture.services.api.impl.ApiServiceImpl
 import com.fortysevendeg.macroid.extras.ImageViewTweaks._
 import com.fortysevendeg.macroid.extras.RecyclerViewTweaks._
 import com.fortysevendeg.macroid.extras.ResourcesExtras._
@@ -32,11 +33,12 @@ trait MainComposer {
 
   lazy val fabActionButton = Option(findView(TR.fab_action_button))
 
-  def composition(implicit contextWrapper: ActivityContextWrapper): Ui[_] = initRecycler ~ initFabButton
+  def composition(data: Seq[ImageData])(implicit contextWrapper: ActivityContextWrapper): Ui[_] =
+    initRecycler(data) ~ initFabButton
 
-  private[this] def initRecycler(implicit contextWrapper: ActivityContextWrapper): Ui[_] =
+  private[this] def initRecycler(data: Seq[ImageData])(implicit contextWrapper: ActivityContextWrapper): Ui[_] =
     (recycler
-        <~ rvAdapter(new ImageListAdapter())
+        <~ rvAdapter(new ImageListAdapter(data))
         <~ rvFixedSize
         <~ rvLayoutManager(new GridLayoutManager(contextWrapper.bestAvailable, 2)))
 

@@ -37,6 +37,7 @@ libraryDependencies ++= Seq(
   aar(androidRecyclerview),
   aar(macroidExtras),
   scalaz,
+  scalazConcurrent,
   cats,
   playJson,
   picasso,
@@ -45,8 +46,6 @@ libraryDependencies ++= Seq(
   androidTest)
 
 ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) }
-
-dexMainClassesConfig := baseDirectory.value / "copy-of-maindexlist.txt"
 
 transitiveAndroidLibs in Android := true
 
