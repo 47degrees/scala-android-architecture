@@ -2,18 +2,20 @@ package com.fortysevendeg.scala.architecture.ui.main
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.MenuItem
 import com.fortysevendeg.architecture.jobs.main.MainJobs
+import com.fortysevendeg.architecture.ui.main.transformations.{MainBinding, MainListUiActionsImpl}
 import com.fortysevendeg.scala.architecture.{R, TypedFindView}
 import macroid.Contexts
 
 class MainActivity
   extends AppCompatActivity
   with TypedFindView
-  with MainListUiActionsImpl
+  with MainBinding
   with Contexts[AppCompatActivity] {
 
-  val jobs = new MainJobs(this)
+  lazy val actions = new MainListUiActionsImpl(this)
+
+  val jobs = new MainJobs()
 
   override def onCreate(savedInstanceState: Bundle) = {
     super.onCreate(savedInstanceState)
@@ -22,7 +24,7 @@ class MainActivity
 
     toolBar foreach setSupportActionBar
 
-    jobs.loadAnimals()
+    jobs.loadAnimals(actions)
 
   }
 

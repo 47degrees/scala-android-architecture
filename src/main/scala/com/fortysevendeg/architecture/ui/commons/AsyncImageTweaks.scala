@@ -21,7 +21,7 @@ import com.fortysevendeg.macroid.extras.DeviceVersion._
 import com.fortysevendeg.macroid.extras.ViewTweaks._
 import com.fortysevendeg.scala.architecture.ui.components.CircularTransformation
 import com.squareup.picasso.Picasso
-import macroid.{ActivityContextWrapper, Tweak}
+import macroid.{ContextWrapper, Tweak}
 
 import scala.language.postfixOps
 
@@ -30,7 +30,7 @@ object AsyncImageTweaks {
 
   def roundedImage(url: String,
         placeHolder: Int,
-        size: Int)(implicit context: ActivityContextWrapper) = CurrentVersion match {
+        size: Int)(implicit context: ContextWrapper) = CurrentVersion match {
     case sdk if sdk >= Lollipop =>
       srcImage(url, placeHolder) + vCircleOutlineProvider(0)
     case _ =>
@@ -41,7 +41,7 @@ object AsyncImageTweaks {
       url: String,
       placeHolder: Int,
       size: Int
-      )(implicit context: ActivityContextWrapper): Tweak[W] = Tweak[W](
+      )(implicit context: ContextWrapper): Tweak[W] = Tweak[W](
     imageView => {
       Picasso.`with`(context.getOriginal)
           .load(url)
@@ -54,7 +54,7 @@ object AsyncImageTweaks {
   def srcImage(
       url: String,
       placeHolder: Int
-      )(implicit context: ActivityContextWrapper): Tweak[W] = Tweak[W](
+      )(implicit context: ContextWrapper): Tweak[W] = Tweak[W](
     imageView => {
       Picasso.`with`(context.getOriginal)
           .load(url)
@@ -63,7 +63,7 @@ object AsyncImageTweaks {
     }
   )
 
-  def srcImage(url: String)(implicit context: ActivityContextWrapper): Tweak[W] = Tweak[W](
+  def srcImage(url: String)(implicit context: ContextWrapper): Tweak[W] = Tweak[W](
     imageView => {
       Picasso.`with`(context.getOriginal)
           .load(url)

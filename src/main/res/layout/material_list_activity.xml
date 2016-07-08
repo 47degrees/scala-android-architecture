@@ -34,7 +34,7 @@
             android:id="@+id/fab_action_button"
             app:layout_anchor="@id/recycler"
             app:layout_anchorGravity="bottom|right|end"
-            app:layout_behavior="com.fortysevendeg.scala.architecture.ui.main.FABAnimationBehavior"
+            app:layout_behavior="com.fortysevendeg.architecture.ui.commons.FABAnimationBehavior"
             style="@style/FabStyle"/>
 
 </android.support.design.widget.CoordinatorLayout>

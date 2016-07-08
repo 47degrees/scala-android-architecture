@@ -1,6 +1,6 @@
 package com.fortysevendeg.architecture.jobs.main
 
-import com.fortysevendeg.scala.architecture.ui.main.ImageData
+import com.fortysevendeg.architecture.ui.main.adapters.ImageData
 import macroid.Ui
 
 trait MainListUiActions {

@@ -1,4 +1,4 @@
-package com.fortysevendeg.scala.architecture.ui.main
+package com.fortysevendeg.architecture.ui.commons
 
 import android.animation.{Animator, AnimatorListenerAdapter}
 import android.content.Context
@@ -7,10 +7,9 @@ import android.support.v4.view.ViewCompat
 import android.support.v4.view.animation.FastOutSlowInInterpolator
 import android.util.AttributeSet
 import android.view.View
-import macroid.Snail
-import macroid._
-import scala.concurrent.ExecutionContext.Implicits.global
+import macroid.{Snail, _}
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Promise
 
 class FABAnimationBehavior
