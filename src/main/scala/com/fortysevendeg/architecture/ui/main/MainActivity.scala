@@ -25,7 +25,7 @@ class MainActivity
 
     setSupportActionBar(findView(TR.toolbar))
 
-    jobs.loadAnimals(actions)
+    jobs.initialize(actions)
 
   }
 

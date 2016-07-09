@@ -20,14 +20,16 @@ trait MainListUiActionsImpl
 
   implicit val contextWrapper: ActivityContextWrapper
 
-  def loadAnimals(data: Seq[Animal]): Ui[Any] =
+  def init(): Ui[Any] =
     (recycler
-      <~ rvAdapter(new AnimalsAdapter(data))
       <~ rvFixedSize
       <~ rvLayoutManager(new GridLayoutManager(contextWrapper.bestAvailable, 2))) ~
       (fabActionButton
         <~ ivSrc(R.drawable.ic_add)
         <~ On.click(content <~ vSnackbarLong(R.string.material_list_add_item)))
+
+  def loadAnimals(data: Seq[Animal]): Ui[Any] =
+    recycler <~ rvAdapter(new AnimalsAdapter(data))
 
 }
 
