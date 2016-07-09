@@ -2,18 +2,16 @@ package com.fortysevendeg.architecture.ui.main.transformations
 
 import com.fortysevendeg.scala.architecture.{TR, TypedFindView}
 
-trait MainBinding {
+class MainBinding(fv: TypedFindView) {
 
-  self: TypedFindView =>
+  lazy val content = Option(fv.findView(TR.content))
 
-  lazy val content = Option(findView(TR.content))
+  lazy val toolBar = Option(fv.findView(TR.toolbar))
 
-  lazy val toolBar = Option(findView(TR.toolbar))
+  lazy val appBarLayout = Option(fv.findView(TR.app_bar_layout))
 
-  lazy val appBarLayout = Option(findView(TR.app_bar_layout))
+  lazy val recycler = Option(fv.findView(TR.recycler))
 
-  lazy val recycler = Option(findView(TR.recycler))
-
-  lazy val fabActionButton = Option(findView(TR.fab_action_button))
+  lazy val fabActionButton = Option(fv.findView(TR.fab_action_button))
 
 }
