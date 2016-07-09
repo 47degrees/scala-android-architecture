@@ -1,11 +1,9 @@
 package com.fortysevendeg.architecture.jobs.main
 
-import cats.data.{Reader, Xor}
+import cats.data.Reader
 import com.fortysevendeg.architecture.services.api.impl.ApiServiceImpl
+import com.fortysevendeg.architecture.ui.commons.TasksOps._
 import com.fortysevendeg.architecture.ui.main.transformations.MainBinding
-
-import scalaz.concurrent.Task
-import scalaz.{-\/, \/-}
 
 class MainJobs {
 
@@ -13,12 +11,9 @@ class MainJobs {
 
   def loadAnimals: Reader[MainBinding with MainListUiActions, Unit] = {
     Reader.apply((actions: MainBinding with MainListUiActions) => {
-      Task.fork(apiService.getAnimals).runAsync {
-        case -\/(ex) =>
-        case \/-(Xor.Left(ex)) =>
-        case \/-(Xor.Right(data)) =>
-          actions.loadAnimals(data).run
-      }
+      apiService.getAnimals.resolveAsyncUi(
+        onResult = actions.loadAnimals
+      )
     })
   }
 }
