@@ -21,9 +21,9 @@ trait MainListUiActionsImpl
 
   implicit val contextWrapper: ActivityContextWrapper
 
-  val mainJobs: MainJobs
+  implicit val mainJobs: MainJobs
 
-  def init(): Ui[Any] = {
+  override def init(): Ui[Any] = {
     (contextWrapper.original.get, toolBar) match {
       case (Some(activity: AppCompatActivity), Some(tb)) =>
         activity.setSupportActionBar(tb)
@@ -36,10 +36,10 @@ trait MainListUiActionsImpl
         <~ On.click(Ui(mainJobs.addItem(this))))
   }
 
-  def loadAnimals(data: Seq[Animal]): Ui[Any] =
+  override def loadAnimals(data: Seq[Animal]): Ui[Any] =
     recycler <~ rvAdapter(new AnimalsAdapter(data))
 
-  def addItem(): Ui[Any] =
+  override def addItem(): Ui[Any] =
     content <~ vSnackbarLong(R.string.material_list_add_item)
 
 }

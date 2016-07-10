@@ -1,9 +1,10 @@
 package com.fortysevendeg.architecture.jobs.main
 
 import cats.data.Reader
+import com.fortysevendeg.architecture.services.api.Animal
 import com.fortysevendeg.architecture.services.api.impl.ApiServiceImpl
 import com.fortysevendeg.architecture.ui.commons.TasksOps._
-import com.fortysevendeg.architecture.ui.main.transformations.MainBinding
+import com.fortysevendeg.architecture.ui.main.transformations.{AnimalHolderBinding, MainBinding}
 
 class MainJobs {
 
@@ -24,6 +25,11 @@ class MainJobs {
   def addItem: Reader[MainBinding with MainListUiActions, Unit] =
     Reader.apply((actions: MainBinding with MainListUiActions) => {
       actions.addItem().run
+    })
+
+  def bindAnimal(animal: Animal): Reader[AnimalHolderBinding with AnimalHolderUiActions, Unit] =
+    Reader.apply((actions: AnimalHolderBinding with AnimalHolderUiActions) => {
+      actions.bind(animal).run
     })
 
 }

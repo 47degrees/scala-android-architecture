@@ -16,7 +16,7 @@ class MainActivity
 
   lazy val actions = new MainBinding(this) with MainListUiActionsImpl {
     override implicit val contextWrapper: ActivityContextWrapper = activityContextWrapper
-    override val mainJobs: MainJobs = jobs
+    override implicit val mainJobs: MainJobs = jobs
   }
 
   override def onCreate(savedInstanceState: Bundle) = {
