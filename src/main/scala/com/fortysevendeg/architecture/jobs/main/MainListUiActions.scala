@@ -9,4 +9,6 @@ trait MainListUiActions {
 
   def loadAnimals(animals: Seq[Animal]): Ui[Any]
 
+  def addItem(): Ui[Any]
+
 }

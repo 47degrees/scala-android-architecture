@@ -9,17 +9,21 @@ class MainJobs {
 
   val apiService = new ApiServiceImpl
 
-  def initialize: Reader[MainBinding with MainListUiActions, Unit] = {
+  def initialize: Reader[MainBinding with MainListUiActions, Unit] =
     Reader.apply((actions: MainBinding with MainListUiActions) => {
       actions.init().run
     }).flatMap(_ => loadAnimals)
-  }
 
-  def loadAnimals: Reader[MainBinding with MainListUiActions, Unit] = {
+  def loadAnimals: Reader[MainBinding with MainListUiActions, Unit] =
     Reader.apply((actions: MainBinding with MainListUiActions) => {
       apiService.getAnimals.resolveAsyncUi(
         onResult = actions.loadAnimals
       )
     })
-  }
+
+  def addItem: Reader[MainBinding with MainListUiActions, Unit] =
+    Reader.apply((actions: MainBinding with MainListUiActions) => {
+      actions.addItem().run
+    })
+
 }
