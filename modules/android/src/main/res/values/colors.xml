@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Default -->
+    <color name="primary">#2D4053</color>
+    <color name="primary_dark">#ff192533</color>
+    <color name="ascent">#F2554A</color>
+    <color name="control_highlight">#ff49cb94</color>
+
+    <color name="text_error_message">#87364550</color>
+    <color name="text_error_button">#ffffff</color>
+    <color name="background_error_button_default">#E05F5E</color>
+    <color name="background_error_button_pressed">#ffc45453</color>
+</resources>
