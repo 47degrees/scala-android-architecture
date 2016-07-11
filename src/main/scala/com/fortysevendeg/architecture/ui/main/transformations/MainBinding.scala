@@ -1,8 +1,10 @@
 package com.fortysevendeg.architecture.ui.main.transformations
 
+import com.fortysevendeg.architecture.jobs.Binding
 import com.fortysevendeg.scala.architecture.{TR, TypedFindView}
 
-class MainBinding(fv: TypedFindView) {
+class MainBinding(fv: TypedFindView)
+  extends Binding {
 
   lazy val content = Option(fv.findView(TR.content))
 

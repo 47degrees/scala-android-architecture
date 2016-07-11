@@ -27,6 +27,7 @@ trait MainListUiActionsImpl
     (contextWrapper.original.get, toolBar) match {
       case (Some(activity: AppCompatActivity), Some(tb)) =>
         activity.setSupportActionBar(tb)
+      case _ =>
     }
     (recycler
       <~ rvFixedSize
