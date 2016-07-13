@@ -9,11 +9,12 @@ class ApiServiceImpl
 
   override def getAnimals: Task[Exception Xor Seq[Animal]] =
     Task {
-      Xor.right(
+      Xor.right {
+        Thread.sleep(1500)
         1 to 10 map { i =>
           Animal(s"Item $i", s"http://lorempixel.com/500/500/animals/$i")
         }
-      )
+      }
     }
 
 }

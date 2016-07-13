@@ -1,7 +1,7 @@
 package com.fortysevendeg.architecture.jobs.main
 
 import cats.data.Reader
-import com.fortysevendeg.architecture.jobs.main.uiactions.{AnimalHolderUiActions, MainListUiActions}
+import com.fortysevendeg.architecture.jobs.main.uiactions.{AnimalHolderUiActions, LoadingUiActions, MainListUiActions}
 import sarch._
 import com.fortysevendeg.architecture.services.api.impl.ApiServiceImpl
 import sarch.TasksOps._
@@ -12,15 +12,17 @@ class MainJobs {
 
   val apiService = new ApiServiceImpl
 
-  def initialize: Job[Binding with MainListUiActions] =
-    Reader((actions: Binding with MainListUiActions) => {
+  def initialize: Job[Binding with MainListUiActions with LoadingUiActions] =
+    Reader((actions: Binding with MainListUiActions with LoadingUiActions) => {
       actions.init().run
     }).flatMap(_ => loadAnimals)
 
-  def loadAnimals: Job[Binding with MainListUiActions] =
-    Reader((actions: Binding with MainListUiActions) => {
+  def loadAnimals: Job[Binding with MainListUiActions with LoadingUiActions] =
+    Reader((actions: Binding with MainListUiActions with LoadingUiActions) => {
       apiService.getAnimals.resolveAsyncUiAction(
-        onResult = (animals: Seq[Animal]) => actions.loadAnimals(animals map toAnimalJob)
+        onPreTask = () => actions.showLoading(),
+        onResult = (animals: Seq[Animal]) =>
+          actions.showContent() + actions.loadAnimals(animals map toAnimalJob)
       )
     })
 

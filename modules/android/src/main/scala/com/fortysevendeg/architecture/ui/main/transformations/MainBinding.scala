@@ -16,4 +16,6 @@ class MainBinding(fv: TypedFindView)
 
   lazy val fabActionButton = Option(fv.findView(TR.fab_action_button))
 
+  lazy val loading = Option(fv.findView(TR.loading))
+
 }
