@@ -1,12 +1,10 @@
-package com.fortysevendeg.architecture.ui.commons
+package sarch
 
 import cats.data.Xor
-import macroid.Ui
+import sarch.AppLog._
 
 import scalaz.concurrent.Task
 import scalaz.{-\/, \/-}
-import AppLog._
-import sarch.UiAction
 
 object TasksOps {
 
@@ -45,22 +43,6 @@ object TasksOps {
       }
     }
 
-    def resolveAsyncUi[E >: Throwable](
-      onResult: (A) => Ui[_] = a => Ui.nop,
-      onException: (E) => Ui[_] = (e: Throwable) => Ui.nop,
-      onPreTask: () => Ui[_] = () => Ui.nop): Unit = {
-      onPreTask().run
-      Task.fork(t).runAsync {
-        case -\/(ex) =>
-          printErrorTaskMessage("=> EXCEPTION Disjunction <=", ex)
-          onException(ex).run
-        case \/-(Xor.Right(response)) => onResult(response).run
-        case \/-(Xor.Left(ex)) =>
-          printErrorTaskMessage(s"=> EXCEPTION Xor Left) <=", ex)
-          onException(ex).run
-      }
-    }
-
     def resolve[E >: Throwable](
       onResult: A => Unit = a => (),
       onException: E => Unit = (e: Throwable) => ()): Unit = {
@@ -72,9 +54,9 @@ object TasksOps {
       }.attemptRun
     }
 
-    def resolveUi[E >: Throwable](
-      onResult: (A) => Ui[_] = a => Ui.nop,
-      onException: (E) => Ui[_] = (e: Throwable) => Ui.nop): Unit = {
+    def resolveUiAction[E >: Throwable](
+                                         onResult: (A) => UiAction = a => UiAction.nop,
+                                         onException: (E) => UiAction = (e: Throwable) => UiAction.nop): Unit = {
       Task.fork(t).map {
         case Xor.Right(response) => onResult(response).run
         case Xor.Left(ex) =>
