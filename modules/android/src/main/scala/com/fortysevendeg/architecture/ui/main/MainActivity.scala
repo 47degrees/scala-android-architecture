@@ -14,7 +14,7 @@ class MainActivity
 
   implicit val jobs = new MainJobs()
 
-  lazy val actions = new MainBinding(this, activityContextWrapper, jobs)
+  lazy val actions = new MainBinding(this)
     with MainListUiActionsImpl
     with LoadingUiActionsImpl
 

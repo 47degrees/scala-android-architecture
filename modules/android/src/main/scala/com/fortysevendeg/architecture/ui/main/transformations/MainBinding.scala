@@ -5,10 +5,7 @@ import sarch.Binding
 import com.fortysevendeg.architecture.{TR, TypedFindView}
 import macroid.ActivityContextWrapper
 
-class MainBinding(
- fv: TypedFindView,
- implicit val contextWrapper: ActivityContextWrapper,
- implicit val mainJobs: MainJobs)
+class MainBinding(fv: TypedFindView)(implicit val contextWrapper: ActivityContextWrapper, val mainJobs: MainJobs)
   extends Binding {
 
   lazy val content = Option(fv.findView(TR.content))
