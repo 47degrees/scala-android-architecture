@@ -28,9 +28,9 @@ object TasksOps {
     }
 
     def resolveAsyncUiAction[E >: Throwable](
-                                              onResult: (A) => UiAction = a => UiAction.nop,
-                                              onException: (E) => UiAction = (e: Throwable) => UiAction.nop,
-                                              onPreTask: () => UiAction = () => UiAction.nop): Unit = {
+      onResult: (A) => UiAction = a => UiAction.nop,
+      onException: (E) => UiAction = (e: Throwable) => UiAction.nop,
+      onPreTask: () => UiAction = () => UiAction.nop): Unit = {
       onPreTask().run
       Task.fork(t).runAsync {
         case -\/(ex) =>
@@ -55,8 +55,8 @@ object TasksOps {
     }
 
     def resolveUiAction[E >: Throwable](
-                                         onResult: (A) => UiAction = a => UiAction.nop,
-                                         onException: (E) => UiAction = (e: Throwable) => UiAction.nop): Unit = {
+     onResult: (A) => UiAction = a => UiAction.nop,
+     onException: (E) => UiAction = (e: Throwable) => UiAction.nop): Unit = {
       Task.fork(t).map {
         case Xor.Right(response) => onResult(response).run
         case Xor.Left(ex) =>
