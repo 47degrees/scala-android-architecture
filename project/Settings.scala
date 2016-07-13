@@ -4,6 +4,7 @@ import Libraries.json._
 import Libraries.macroid._
 import Libraries.scalaz._
 import Libraries.test._
+import Libraries.graphics._
 import android.Keys._
 import sbt.Keys._
 import sbt._
@@ -40,6 +41,9 @@ object Settings {
   // Process Module
   lazy val jobsSettings = basicSettings ++ librarySettings
 
+  // Sarch Module
+  lazy val sarchSettings = basicSettings ++ librarySettings
+
   lazy val androidDependencies = Seq(
     aar(macroidRoot),
     aar(androidSupportv4),
@@ -49,6 +53,7 @@ object Settings {
     aar(androidRecyclerview),
     aar(macroidExtras),
     playJson,
+    picasso,
     specs2,
     mockito,
     androidTest)

@@ -1,6 +1,6 @@
 package com.fortysevendeg.architecture.ui.main.transformations
 
-import com.fortysevendeg.architecture.jobs.Binding
+import sarch.Binding
 import com.fortysevendeg.architecture.{TR, TypedFindView}
 
 class AnimalHolderBinding(fv: TypedFindView)

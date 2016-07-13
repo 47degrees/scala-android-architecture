@@ -17,7 +17,7 @@ trait AnimalHolderUiActionsImpl
 
   override def bind(animal: Animal): Ui[Any] =
     (parent <~ On.click(parent <~ vSnackbarLong(animal.name))) ~
-      (text <~ tvText(animal.name)) //~
-  //(image <~ srcImage(animal.url))
+      (text <~ tvText(animal.name)) ~
+      (image <~ srcImage(animal.url))
 
 }

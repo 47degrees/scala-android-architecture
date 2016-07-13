@@ -20,7 +20,7 @@ import com.fortysevendeg.macroid.extras.DeviceVersion._
 import com.fortysevendeg.macroid.extras.ViewTweaks._
 import com.fortysevendeg.architecture.ui.components.CircularTransformation
 
-//import com.squareup.picasso.Picasso
+import com.squareup.picasso.Picasso
 import macroid.{ContextWrapper, Tweak}
 
 import scala.language.postfixOps
@@ -28,47 +28,47 @@ import scala.language.postfixOps
 object AsyncImageTweaks {
   type W = ImageView
 
-  //  def roundedImage(url: String,
-  //        placeHolder: Int,
-  //        size: Int)(implicit context: ContextWrapper) = CurrentVersion match {
-  //    case sdk if sdk >= Lollipop =>
-  //      srcImage(url, placeHolder) + vCircleOutlineProvider(0)
-  //    case _ =>
-  //      roundedImageTweak(url, placeHolder, size)
-  //  }
-  //
-  //  private def roundedImageTweak(
-  //      url: String,
-  //      placeHolder: Int,
-  //      size: Int
-  //      )(implicit context: ContextWrapper): Tweak[W] = Tweak[W](
-  //    imageView => {
-  //      Picasso.`with`(context.getOriginal)
-  //          .load(url)
-  //          .transform(new CircularTransformation(size))
-  //          .placeholder(placeHolder)
-  //          .into(imageView)
-  //    }
-  //  )
-  //
-  //  def srcImage(
-  //      url: String,
-  //      placeHolder: Int
-  //      )(implicit context: ContextWrapper): Tweak[W] = Tweak[W](
-  //    imageView => {
-  //      Picasso.`with`(context.getOriginal)
-  //          .load(url)
-  //          .placeholder(placeHolder)
-  //          .into(imageView)
-  //    }
-  //  )
-  //
-  //  def srcImage(url: String)(implicit context: ContextWrapper): Tweak[W] = Tweak[W](
-  //    imageView => {
-  //      Picasso.`with`(context.getOriginal)
-  //          .load(url)
-  //          .into(imageView)
-  //    }
-  //  )
+  def roundedImage(url: String,
+                   placeHolder: Int,
+                   size: Int)(implicit context: ContextWrapper) = CurrentVersion match {
+    case sdk if sdk >= Lollipop =>
+      srcImage(url, placeHolder) + vCircleOutlineProvider(0)
+    case _ =>
+      roundedImageTweak(url, placeHolder, size)
+  }
+
+  private def roundedImageTweak(
+                                 url: String,
+                                 placeHolder: Int,
+                                 size: Int
+                               )(implicit context: ContextWrapper): Tweak[W] = Tweak[W](
+    imageView => {
+      Picasso.`with`(context.getOriginal)
+        .load(url)
+        .transform(new CircularTransformation(size))
+        .placeholder(placeHolder)
+        .into(imageView)
+    }
+  )
+
+  def srcImage(
+                url: String,
+                placeHolder: Int
+              )(implicit context: ContextWrapper): Tweak[W] = Tweak[W](
+    imageView => {
+      Picasso.`with`(context.getOriginal)
+        .load(url)
+        .placeholder(placeHolder)
+        .into(imageView)
+    }
+  )
+
+  def srcImage(url: String)(implicit context: ContextWrapper): Tweak[W] = Tweak[W](
+    imageView => {
+      Picasso.`with`(context.getOriginal)
+        .load(url)
+        .into(imageView)
+    }
+  )
 }
 
