@@ -11,6 +11,7 @@ import com.fortysevendeg.macroid.extras.ViewTweaks._
 import com.fortysevendeg.architecture.R
 import macroid.FullDsl._
 import macroid._
+import sarch.UiAction
 
 import scala.language.postfixOps
 
@@ -23,25 +24,27 @@ trait MainListUiActionsImpl
 
   implicit val mainJobs: MainJobs
 
-  override def init(): Ui[Any] = {
+  override def init(): UiAction = UiAction {
     (contextWrapper.original.get, toolBar) match {
       case (Some(activity: AppCompatActivity), Some(tb)) =>
         activity.setSupportActionBar(tb)
       case _ =>
     }
-    (recycler
+    ((recycler
       <~ rvFixedSize
       <~ rvLayoutManager(new GridLayoutManager(contextWrapper.bestAvailable, 2))) ~
       (fabActionButton
         <~ ivSrc(R.drawable.ic_add)
-        <~ On.click(Ui(mainJobs.addItem(this))))
+        <~ On.click(Ui(mainJobs.addItem(this))))).run
   }
 
-  override def loadAnimals(data: Seq[Animal]): Ui[Any] =
-    recycler <~ rvAdapter(new AnimalsAdapter(data))
+  override def loadAnimals(data: Seq[Animal]): UiAction = UiAction {
+    (recycler <~ rvAdapter(new AnimalsAdapter(data))).run
+  }
 
-  override def addItem(): Ui[Any] =
-    content <~ vSnackbarLong(R.string.material_list_add_item)
+  override def addItem(): UiAction = UiAction {
+    (content <~ vSnackbarLong(R.string.material_list_add_item)).run
+  }
 
 }
 

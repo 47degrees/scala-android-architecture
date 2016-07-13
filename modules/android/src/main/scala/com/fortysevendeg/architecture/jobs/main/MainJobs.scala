@@ -18,7 +18,7 @@ class MainJobs {
 
   def loadAnimals: Job[MainBinding with MainListUiActions] =
     Reader((actions: MainBinding with MainListUiActions) => {
-      apiService.getAnimals.resolveAsyncUi(
+      apiService.getAnimals.resolveAsyncUiAction(
         onResult = actions.loadAnimals
       )
     })

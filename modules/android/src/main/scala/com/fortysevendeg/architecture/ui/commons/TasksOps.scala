@@ -6,6 +6,7 @@ import macroid.Ui
 import scalaz.concurrent.Task
 import scalaz.{-\/, \/-}
 import AppLog._
+import sarch.UiAction
 
 object TasksOps {
 
@@ -25,6 +26,22 @@ object TasksOps {
         case \/-(Xor.Left(ex)) =>
           printErrorTaskMessage(s"=> EXCEPTION Xor Left) <=", ex)
           onException(ex)
+      }
+    }
+
+    def resolveAsyncUiAction[E >: Throwable](
+                                              onResult: (A) => UiAction = a => UiAction.nop,
+                                              onException: (E) => UiAction = (e: Throwable) => UiAction.nop,
+                                              onPreTask: () => UiAction = () => UiAction.nop): Unit = {
+      onPreTask().run
+      Task.fork(t).runAsync {
+        case -\/(ex) =>
+          printErrorTaskMessage("=> EXCEPTION Disjunction <=", ex)
+          onException(ex).run
+        case \/-(Xor.Right(response)) => onResult(response).run
+        case \/-(Xor.Left(ex)) =>
+          printErrorTaskMessage(s"=> EXCEPTION Xor Left) <=", ex)
+          onException(ex).run
       }
     }
 
