@@ -13,7 +13,7 @@ object AppBuild extends Build {
     .settings(jobsSettings).dependsOn(services, sarch)
 
   lazy val services = Project(id = "services", base = file("modules/services"))
-    .settings(servicesSettings)
+    .settings(servicesSettings).dependsOn(sarch)
 
   lazy val sarch = Project(id = "sarch", base = file("modules/sarch"))
     .settings(sarchSettings)

@@ -2,8 +2,9 @@ package com.fortysevendeg.architecture.ui.main.transformations
 
 import sarch.Binding
 import com.fortysevendeg.architecture.{TR, TypedFindView}
+import macroid.ContextWrapper
 
-class AnimalHolderBinding(fv: TypedFindView)
+class AnimalHolderBinding(fv: TypedFindView)(implicit val contextWrapper: ContextWrapper)
   extends Binding {
 
   lazy val parent = Option(fv.findView(TR.content))

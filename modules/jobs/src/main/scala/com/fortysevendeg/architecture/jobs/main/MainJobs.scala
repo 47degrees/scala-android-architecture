@@ -1,39 +1,49 @@
 package com.fortysevendeg.architecture.jobs.main
 
-import cats.data.Reader
+import cats.data.Xor
+import com.fortysevendeg.architecture.jobs.main.Conversions._
 import com.fortysevendeg.architecture.jobs.main.uiactions.{AnimalHolderUiActions, LoadingUiActions, MainListUiActions}
-import sarch._
 import com.fortysevendeg.architecture.services.api.impl.ApiServiceImpl
-import sarch.TasksOps._
-import Conversions._
-import com.fortysevendeg.architecture.services.api.Animal
+import sarch.Service._
+import sarch._
 
-class MainJobs {
+import scalaz.concurrent.Task
+
+class MainJobs(
+  listActions: Binding with MainListUiActions with LoadingUiActions,
+  rowActions: Binding with AnimalHolderUiActions) {
 
   val apiService = new ApiServiceImpl
 
-  def initialize: Job[Binding with MainListUiActions with LoadingUiActions] =
-    Reader((actions: Binding with MainListUiActions with LoadingUiActions) => {
-      actions.init().run
-    }).flatMap(_ => loadAnimals)
-
-  def loadAnimals: Job[Binding with MainListUiActions with LoadingUiActions] =
-    Reader((actions: Binding with MainListUiActions with LoadingUiActions) => {
-      apiService.getAnimals.resolveAsyncUiAction(
-        onPreTask = () => actions.showLoading(),
-        onResult = (animals: Seq[Animal]) =>
-          actions.showContent() + actions.loadAnimals(animals map toAnimalJob)
-      )
+  def initialize: Service[Exception, Unit] =
+    Service(Task {
+      Xor.Right(listActions.init(this).run)
     })
 
-  def addItem: Job[Binding with MainListUiActions] =
-    Reader((actions: Binding with MainListUiActions) => {
-      actions.addItem().run
-    })
+  def loadAnimals: Service[Exception, Unit] = {
+    for {
+      _ <- Service(Task {
+        Xor.Right {
+          listActions.showLoading().run
+        }
+      })
+      animals <- apiService.getAnimals
+      _ <- Service(Task {
+        Xor.Right {
+          (listActions.showContent() + listActions.loadAnimals(animals map toAnimalJob)).run
+        }
+      })
+    } yield (())
+  }
 
-  def bindAnimal(animal: AnimalJob): Job[Binding with AnimalHolderUiActions] =
-    Reader((actions: Binding with AnimalHolderUiActions) => {
-      actions.bind(animal).run
+  def addItem: Service[Exception, Unit] =
+    Service (Task {
+        Xor.Right(listActions.addItem().run)
+      })
+
+  def bindAnimal(animal: AnimalJob): Service[Exception, Unit] =
+    Service(Task {
+      Xor.Right(rowActions.bind(animal).run)
     })
 
 }

@@ -14,8 +14,6 @@ trait AnimalHolderUiActionsImpl
 
   self: AnimalHolderBinding =>
 
-  implicit val contextWrapper: ContextWrapper
-
   override def bind(animal: AnimalJob): UiAction = UiAction {
     ((parent <~ On.click(parent <~ vSnackbarLong(animal.name))) ~
       (text <~ tvText(animal.name)) ~
