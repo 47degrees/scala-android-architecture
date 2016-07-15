@@ -1,23 +1,20 @@
 package com.fortysevendeg.architecture.ui.main.transformations
 
-import com.fortysevendeg.architecture.jobs.main.uiactions.LoadingUiActions
-import sarch.UiAction
+import com.fortysevendeg.architecture.ui.commons.UiOps._
 import com.fortysevendeg.macroid.extras.ViewTweaks._
+import commons.Service._
 import macroid._
 
-trait LoadingUiActionsImpl
-  extends LoadingUiActions {
+trait LoadingUiActionsImpl {
 
   self: MainBinding =>
 
-  override def showLoading(): UiAction = UiAction {
+  def showLoading(): Service[Throwable, Unit] =
     ((loading <~ vVisible) ~
-      (recycler <~ vGone)).run
-  }
+      (recycler <~ vGone)).toService
 
-  override def showContent(): UiAction = UiAction {
+  def showContent(): Service[Throwable, Unit] =
     ((loading <~ vGone) ~
-      (recycler <~ vVisible)).run
-  }
+      (recycler <~ vVisible)).toService
 
 }

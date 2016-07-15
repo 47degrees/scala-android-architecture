@@ -5,7 +5,7 @@ import scala.reflect.ClassTag
 import scalaz.concurrent.Task
 import scala.language.{higherKinds, implicitConversions}
 
-package object sarch {
+package object commons {
 
   object Service {
 
@@ -18,14 +18,12 @@ package object sarch {
       override def pure[A](x: A): Task[A] = Task(x)
     }
 
-    type Service[Ex <: Exception, Val] = XorT[Task, Ex, Val]
+    type Service[Ex <: Throwable, Val] = XorT[Task, Ex, Val]
 
-    def apply[Ex <: Exception : ClassTag, Val](f: Task[Ex Xor Val]) : Service[Ex, Val] = {
+    def apply[Ex <: Throwable : ClassTag, Val](f: Task[Ex Xor Val]) : Service[Ex, Val] = {
       XorT[Task, Ex, Val](f)
     }
 
   }
-
-  trait Binding
 
 }

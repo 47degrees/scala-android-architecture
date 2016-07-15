@@ -2,10 +2,8 @@ package com.fortysevendeg.architecture.ui.main.transformations
 
 import com.fortysevendeg.architecture.{TR, TypedFindView}
 import macroid.ActivityContextWrapper
-import sarch.Binding
 
-class MainBinding(fv: TypedFindView)(implicit val contextWrapper: ActivityContextWrapper)
-  extends Binding {
+class MainBinding(fv: TypedFindView)(implicit val contextWrapper: ActivityContextWrapper) {
 
   lazy val content = Option(fv.findView(TR.content))
 

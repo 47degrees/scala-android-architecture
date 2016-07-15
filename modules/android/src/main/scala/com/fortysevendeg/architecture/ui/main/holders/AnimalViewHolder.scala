@@ -2,7 +2,7 @@ package com.fortysevendeg.architecture.ui.main.holders
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.fortysevendeg.architecture.jobs.main.AnimalJob
+import com.fortysevendeg.architecture.services.api.Animal
 import com.fortysevendeg.architecture.ui.commons.AsyncImageTweaks._
 import com.fortysevendeg.architecture.{TR, TypedFindView}
 import com.fortysevendeg.macroid.extras.TextTweaks._
@@ -20,7 +20,7 @@ case class AnimalViewHolder(parent: View)(implicit cw: ContextWrapper)
 
   override protected def findViewById(id: Int): View = parent.findViewById(id)
 
-  def bind(animal: AnimalJob): Unit =
+  def bind(animal: Animal): Unit =
     ((parent <~ On.click(parent <~ vSnackbarLong(animal.name))) ~
       (text <~ tvText(animal.name)) ~
       (image <~ srcImage(animal.url))).run

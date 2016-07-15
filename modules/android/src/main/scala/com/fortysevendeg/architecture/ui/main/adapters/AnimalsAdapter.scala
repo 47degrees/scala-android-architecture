@@ -3,11 +3,11 @@ package com.fortysevendeg.architecture.ui.main.adapters
 import android.support.v7.widget.RecyclerView
 import android.view.{LayoutInflater, ViewGroup}
 import com.fortysevendeg.architecture.R
-import com.fortysevendeg.architecture.jobs.main.AnimalJob
+import com.fortysevendeg.architecture.services.api.Animal
 import com.fortysevendeg.architecture.ui.main.holders.AnimalViewHolder
 import macroid._
 
-case class AnimalsAdapter(animals: Seq[AnimalJob])(implicit context: ContextWrapper)
+case class AnimalsAdapter(animals: Seq[Animal])(implicit context: ContextWrapper)
     extends RecyclerView.Adapter[AnimalViewHolder] {
 
   override def onCreateViewHolder(parent: ViewGroup, i: Int): AnimalViewHolder = {
