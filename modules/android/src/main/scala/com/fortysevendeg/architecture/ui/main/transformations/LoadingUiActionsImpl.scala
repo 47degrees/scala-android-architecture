@@ -17,4 +17,8 @@ trait LoadingUiActionsImpl {
     ((loading <~ vGone) ~
       (recycler <~ vVisible)).toService
 
+  def showError(): Service[Throwable, Unit] =
+    ((loading <~ vGone) ~
+      (recycler <~ vGone)).toService
+
 }

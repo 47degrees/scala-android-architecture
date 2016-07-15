@@ -11,6 +11,7 @@ import com.fortysevendeg.architecture.ui.main.jobs.MainJobs
 
 import scalaz.concurrent.Task
 import scalaz.{-\/, \/-}
+import commons.TasksOps._
 
 class MainActivity
   extends AppCompatActivity
@@ -26,11 +27,21 @@ class MainActivity
 
     val tasks = (jobs.initialize |@| jobs.loadAnimals).tupled
 
-    Task.fork(tasks.value).runAsync {
-      case -\/(ex) =>
-      case \/-(Xor.Right(response)) =>
-      case \/-(Xor.Left(ex)) =>
-    }
+//    Task.fork(tasks.value.or(jobs.showError.value)).runAsync {
+//      case -\/(ex) =>
+//      case \/-(Xor.Right(response)) =>
+//      case \/-(Xor.Left(ex)) =>
+//    }
+
+//    Task.fork(tasks.value).runAsync {
+//      case -\/(ex) => jobs.showError.value.run
+//      case \/-(Xor.Right(response)) =>
+//      case \/-(Xor.Left(ex)) => jobs.showError.value.run
+//    }
+
+    tasks.value.resolveAsyncService(
+      onException = (e) => jobs.showError
+    )
 
   }
 

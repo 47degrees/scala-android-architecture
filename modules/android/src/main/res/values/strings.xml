@@ -5,4 +5,6 @@
 
     <string name="material_list_add_item">Add new item</string>
 
+    <string name="material_list_error">Error</string>
+
 </resources>

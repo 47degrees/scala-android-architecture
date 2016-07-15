@@ -4,6 +4,6 @@ import commons.Service._
 
 trait ApiService {
 
-  def getAnimals: Service[Throwable, Seq[Animal]]
+  def getAnimals(simulateFail: Boolean): Service[Throwable, Seq[Animal]]
 
 }

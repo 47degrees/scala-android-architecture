@@ -14,11 +14,10 @@ import macroid.FullDsl._
 import macroid._
 
 import scala.language.postfixOps
-import scalaz.concurrent.Task
 
 trait MainListUiActionsImpl {
 
-  self : MainBinding =>
+  self: MainBinding =>
 
   def init(): Service[Throwable, Unit] =
     (Ui {
@@ -33,16 +32,16 @@ trait MainListUiActionsImpl {
         <~ rvLayoutManager(new GridLayoutManager(contextWrapper.bestAvailable, 2))) ~
       (fabActionButton
         <~ ivSrc(R.drawable.ic_add)
-        <~ On.click(
-        Ui {
-          Task.fork(jobs.addItem().value).run
-        }))).toService
+        <~ On.click(Ui(jobs.addItem().value.run)))).toService
 
   def loadAnimals(data: Seq[Animal]): Service[Throwable, Unit] =
     (recycler <~ rvAdapter(new AnimalsAdapter(data))).toService
 
   def addItem(): Service[Throwable, Unit] =
     (content <~ vSnackbarLong(R.string.material_list_add_item)).toService
+
+  def displayError(): Service[Throwable, Unit] =
+    (content <~ vSnackbarIndefinite(R.string.material_list_error)).toService
 
 }
 
