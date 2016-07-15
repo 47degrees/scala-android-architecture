@@ -6,7 +6,6 @@ import com.fortysevendeg.architecture.R
 import com.fortysevendeg.architecture.services.api.Animal
 import com.fortysevendeg.architecture.ui.commons.UiOps._
 import com.fortysevendeg.architecture.ui.main.adapters.AnimalsAdapter
-import com.fortysevendeg.architecture.ui.main.jobs.MainJobs
 import com.fortysevendeg.macroid.extras.ImageViewTweaks._
 import com.fortysevendeg.macroid.extras.RecyclerViewTweaks._
 import com.fortysevendeg.macroid.extras.ViewTweaks._
@@ -21,7 +20,7 @@ trait MainListUiActionsImpl {
 
   self : MainBinding =>
 
-  def init(mainJobs: MainJobs): Service[Throwable, Unit] =
+  def init(): Service[Throwable, Unit] =
     (Ui {
       (contextWrapper.original.get, toolBar) match {
         case (Some(activity: AppCompatActivity), Some(tb)) =>
@@ -36,7 +35,7 @@ trait MainListUiActionsImpl {
         <~ ivSrc(R.drawable.ic_add)
         <~ On.click(
         Ui {
-          Task.fork(mainJobs.addItem.value).run
+          Task.fork(jobs.addItem().value).run
         }))).toService
 
   def loadAnimals(data: Seq[Animal]): Service[Throwable, Unit] =

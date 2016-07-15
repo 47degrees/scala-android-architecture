@@ -1,9 +1,9 @@
 package com.fortysevendeg.architecture.services.api
 
-import sarch.Service._
+import commons.Service._
 
 trait ApiService {
 
-  def getAnimals: Service[Exception, Seq[Animal]]
+  def getAnimals: Service[Throwable, Seq[Animal]]
 
 }

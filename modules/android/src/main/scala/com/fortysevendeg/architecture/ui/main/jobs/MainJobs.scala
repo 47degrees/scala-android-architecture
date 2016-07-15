@@ -1,25 +1,29 @@
 package com.fortysevendeg.architecture.ui.main.jobs
 
+import com.fortysevendeg.architecture.TypedFindView
 import com.fortysevendeg.architecture.services.api.impl.ApiServiceImpl
 import com.fortysevendeg.architecture.ui.main.transformations.{LoadingUiActionsImpl, MainBinding, MainListUiActionsImpl}
 import commons.Service._
+import macroid.ActivityContextWrapper
 
-class MainJobs(listActions: MainBinding with MainListUiActionsImpl with LoadingUiActionsImpl) {
+class MainJobs(tfv: TypedFindView)(implicit activityContextWrapper: ActivityContextWrapper) {
 
   val apiService = new ApiServiceImpl
 
+  val uiActions = new MainBinding(this, tfv) with MainListUiActionsImpl with LoadingUiActionsImpl
+
   def initialize: Service[Throwable, Unit] =
-    listActions.init(this)
+    uiActions.init()
 
   def loadAnimals: Service[Throwable, Unit] = {
     for {
-      _ <- listActions.showLoading()
+      _ <- uiActions.showLoading()
       animals <- apiService.getAnimals
-      _ <- listActions.showContent()
-      _ <- listActions.loadAnimals(animals)
-    } yield (())
+      _ <- uiActions.showContent()
+      _ <- uiActions.loadAnimals(animals)
+    } yield ()
   }
 
-  def addItem: Service[Throwable, Unit] = listActions.addItem()
+  def addItem(): Service[Throwable, Unit] = uiActions.addItem()
 
 }

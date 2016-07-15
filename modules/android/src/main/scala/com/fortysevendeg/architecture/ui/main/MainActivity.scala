@@ -3,7 +3,6 @@ package com.fortysevendeg.architecture.ui.main
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import cats.data.Xor
-import com.fortysevendeg.architecture.ui.main.transformations._
 import com.fortysevendeg.architecture.{R, TypedFindView}
 import macroid.Contexts
 import commons.Service._
@@ -18,11 +17,7 @@ class MainActivity
   with TypedFindView
   with Contexts[AppCompatActivity] {
 
-  lazy val listActions = new MainBinding(this)
-    with MainListUiActionsImpl
-    with LoadingUiActionsImpl
-
-  implicit lazy val jobs = new MainJobs(listActions)
+  implicit lazy val jobs = new MainJobs(this)
 
   override def onCreate(savedInstanceState: Bundle) = {
     super.onCreate(savedInstanceState)
