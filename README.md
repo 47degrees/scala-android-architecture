@@ -33,9 +33,9 @@ _**type Service[Ex <: Throwable, Val] = XorT[Task, Ex, Val]**_
 Our _Service_ type is a _Task_ of _ScalaZ_ in other to can do async tasks and using a _Xor_ of
 _Cats_ for exceptions and value of the method
 
-For example, a method of our Jobs can have calls to Ui and Services:
+For example, a method of our Job can have calls to Ui and Services:
  
-```
+```scala
   def loadAnimals: Service[Throwable, Unit] = {
     for {
       _ <- uiActions.showLoading()
@@ -48,7 +48,7 @@ For example, a method of our Jobs can have calls to Ui and Services:
 
 In the activity we can do that:
 
-```
+```scala
 val tasks = (jobs.initialize |@| jobs.loadAnimals).tupled
 
 tasks.value.resolveOr(_ => jobs.showError)
