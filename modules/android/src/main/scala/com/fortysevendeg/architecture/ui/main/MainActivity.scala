@@ -2,16 +2,12 @@ package com.fortysevendeg.architecture.ui.main
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import cats.data.Xor
-import com.fortysevendeg.architecture.{R, TypedFindView}
-import macroid.Contexts
-import commons.Service._
 import cats.implicits._
 import com.fortysevendeg.architecture.ui.main.jobs.MainJobs
-
-import scalaz.concurrent.Task
-import scalaz.{-\/, \/-}
+import com.fortysevendeg.architecture.{R, TypedFindView}
+import commons.Service._
 import commons.TasksOps._
+import macroid.Contexts
 
 class MainActivity
   extends AppCompatActivity
@@ -27,21 +23,7 @@ class MainActivity
 
     val tasks = (jobs.initialize |@| jobs.loadAnimals).tupled
 
-//    Task.fork(tasks.value.or(jobs.showError.value)).runAsync {
-//      case -\/(ex) =>
-//      case \/-(Xor.Right(response)) =>
-//      case \/-(Xor.Left(ex)) =>
-//    }
-
-//    Task.fork(tasks.value).runAsync {
-//      case -\/(ex) => jobs.showError.value.run
-//      case \/-(Xor.Right(response)) =>
-//      case \/-(Xor.Left(ex)) => jobs.showError.value.run
-//    }
-
-    tasks.value.resolveAsyncService(
-      onException = (e) => jobs.showError
-    )
+    tasks.value.resolveOr(_ => jobs.showError)
 
   }
 

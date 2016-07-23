@@ -40,6 +40,8 @@ object TasksOps {
       }
     }
 
+    def resolveOr[E >: Throwable](exception: (E) => Service[Throwable, A]) = resolveAsyncService(onException = exception)
+
     def resolve[E >: Throwable](
       onResult: A => Unit = a => (),
       onException: E => Unit = (e: Throwable) => ()): Unit = {
