@@ -9,7 +9,7 @@ import com.fortysevendeg.architecture.ui.main.adapters.AnimalsAdapter
 import com.fortysevendeg.macroid.extras.ImageViewTweaks._
 import com.fortysevendeg.macroid.extras.RecyclerViewTweaks._
 import com.fortysevendeg.macroid.extras.ViewTweaks._
-import commons.Service._
+import commons.TaskService._
 import macroid.FullDsl._
 import macroid._
 
@@ -19,7 +19,7 @@ trait MainListUiActionsImpl {
 
   self: MainBinding =>
 
-  def init(): Service[Throwable, Unit] =
+  def init(): TaskService[Unit] =
     (Ui {
       (contextWrapper.original.get, toolBar) match {
         case (Some(activity: AppCompatActivity), Some(tb)) =>
@@ -34,13 +34,13 @@ trait MainListUiActionsImpl {
         <~ ivSrc(R.drawable.ic_add)
         <~ On.click(Ui(jobs.addItem().value.run)))).toService
 
-  def loadAnimals(data: Seq[Animal]): Service[Throwable, Unit] =
+  def loadAnimals(data: Seq[Animal]): TaskService[Unit] =
     (recycler <~ rvAdapter(new AnimalsAdapter(data))).toService
 
-  def addItem(): Service[Throwable, Unit] =
+  def addItem(): TaskService[Unit] =
     (content <~ vSnackbarLong(R.string.material_list_add_item)).toService
 
-  def displayError(): Service[Throwable, Unit] =
+  def displayError(): TaskService[Unit] =
     (content <~ vSnackbarIndefinite(R.string.material_list_error)).toService
 
 }

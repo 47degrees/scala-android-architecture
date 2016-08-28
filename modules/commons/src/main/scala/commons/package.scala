@@ -1,13 +1,12 @@
 import cats.{Functor, Monad}
 import cats.data._
 
-import scala.reflect.ClassTag
 import scalaz.concurrent.Task
 import scala.language.{higherKinds, implicitConversions}
 
 package object commons {
 
-  object Service {
+  object TaskService {
 
     implicit val taskFunctor = new Functor[Task] {
       override def map[A, B](fa: Task[A])(f: (A) => B): Task[B] = fa.map(f)
@@ -18,10 +17,15 @@ package object commons {
       override def pure[A](x: A): Task[A] = Task(x)
     }
 
-    type Service[Ex <: Throwable, Val] = XorT[Task, Ex, Val]
+    type TaskService[A] = XorT[Task, ServiceException, A]
 
-    def apply[Ex <: Throwable : ClassTag, Val](f: Task[Ex Xor Val]) : Service[Ex, Val] = {
-      XorT[Task, Ex, Val](f)
+    trait ServiceException extends RuntimeException {
+      def message: String
+      def cause: Option[Throwable]
+    }
+
+    def apply[A](f: Task[ServiceException Xor A]) : TaskService[A] = {
+      XorT[Task, ServiceException, A](f)
     }
 
   }

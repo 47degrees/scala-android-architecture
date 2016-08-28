@@ -1,7 +1,7 @@
 package commons
 
 import cats.data.Xor
-import commons.Service.Service
+import commons.TaskService.{ServiceException, TaskService}
 import sarch.AppLog._
 
 import scalaz.concurrent.Task
@@ -27,8 +27,8 @@ object TasksOps {
     }
 
     def resolveAsyncService[E >: Throwable](
-      onResult: (A) => Service[Throwable, A] = a => Service(Task(Xor.Right(a))),
-      onException: (E) => Service[Throwable, A] = (e: Throwable) => Service(Task(Xor.Left(e)))): Unit = {
+      onResult: (A) => TaskService[A] = a => TaskService(Task(Xor.Right(a))),
+      onException: (E) => TaskService[A] = (e: ServiceException) => TaskService(Task(Xor.Left(e)))): Unit = {
       Task.fork(t).runAsync {
         case -\/(ex) =>
           printErrorTaskMessage("=> EXCEPTION Disjunction <=", ex)
@@ -40,7 +40,7 @@ object TasksOps {
       }
     }
 
-    def resolveOr[E >: Throwable](exception: (E) => Service[Throwable, A]) = resolveAsyncService(onException = exception)
+    def resolveOr[E >: Throwable](exception: (E) => TaskService[A]) = resolveAsyncService(onException = exception)
 
     def resolve[E >: Throwable](
       onResult: A => Unit = a => (),
@@ -54,8 +54,8 @@ object TasksOps {
     }
 
     def resolveService[E >: Throwable](
-      onResult: (A) => Service[Throwable, A] = a => Service(Task(Xor.Right(a))),
-      onException: (E) => Service[Throwable, A] = (e: Throwable) => Service(Task(Xor.Left(e)))): Unit = {
+      onResult: (A) => TaskService[A] = a => TaskService(Task(Xor.Right(a))),
+      onException: (E) => TaskService[A] = (e: ServiceException) => TaskService(Task(Xor.Left(e)))): Unit = {
       Task.fork(t).map {
         case Xor.Right(response) => onResult(response).value.run
         case Xor.Left(ex) =>

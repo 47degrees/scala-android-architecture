@@ -1,9 +1,9 @@
 package com.fortysevendeg.architecture.services.api
 
-import commons.Service._
+import commons.TaskService._
 
 trait ApiService {
 
-  def getAnimals(simulateFail: Boolean): Service[Throwable, Seq[Animal]]
+  def getAnimals(simulateFail: Boolean): TaskService[Seq[Animal]]
 
 }

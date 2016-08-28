@@ -3,10 +3,10 @@ package com.fortysevendeg.architecture.ui.main.jobs
 import com.fortysevendeg.architecture.TypedFindView
 import com.fortysevendeg.architecture.services.api.impl.ApiServiceImpl
 import com.fortysevendeg.architecture.ui.main.transformations.{LoadingUiActionsImpl, MainBinding, MainListUiActionsImpl}
-import commons.Service._
+import commons.TaskService._
 import macroid.ActivityContextWrapper
 import cats.implicits._
-import commons.Service
+import commons.TaskService
 
 class MainJobs(tfv: TypedFindView)(implicit activityContextWrapper: ActivityContextWrapper) {
 
@@ -14,10 +14,10 @@ class MainJobs(tfv: TypedFindView)(implicit activityContextWrapper: ActivityCont
 
   val uiActions = new MainBinding(this, tfv) with MainListUiActionsImpl with LoadingUiActionsImpl
 
-  def initialize: Service[Throwable, Unit] =
+  def initialize: TaskService[Unit] =
     uiActions.init()
 
-  def loadAnimals: Service[Throwable, Unit] = {
+  def loadAnimals: TaskService[Unit] = {
     for {
       _ <- uiActions.showLoading()
       animals <- apiService.getAnimals()
@@ -26,9 +26,9 @@ class MainJobs(tfv: TypedFindView)(implicit activityContextWrapper: ActivityCont
     } yield ()
   }
 
-  def addItem(): Service[Throwable, Unit] = uiActions.addItem()
+  def addItem(): TaskService[Unit] = uiActions.addItem()
 
-  def showError: Service[Throwable, (Unit, Unit)] =
-    Service((uiActions.showError() |@| uiActions.displayError()).tupled.value)
+  def showError: TaskService[(Unit, Unit)] =
+    TaskService((uiActions.showError() |@| uiActions.displayError()).tupled.value)
 
 }

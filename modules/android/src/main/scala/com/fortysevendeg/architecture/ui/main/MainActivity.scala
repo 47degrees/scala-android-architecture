@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import cats.implicits._
 import com.fortysevendeg.architecture.ui.main.jobs.MainJobs
 import com.fortysevendeg.architecture.{R, TypedFindView}
-import commons.Service._
+import commons.TaskService._
 import commons.TasksOps._
 import macroid.Contexts
 
