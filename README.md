@@ -28,15 +28,15 @@ or whatever (using _Services_)
 In order to can compose the methods of the Ui and Services, all methods must return the same type. 
 The type is define in _commons_ module and it's the next:
 
-_**type Service[Ex <: Throwable, Val] = XorT[Task, Ex, Val]**_
+_**type TaskService[A] = XorT[Task, ServiceException, A]**_
 
-Our _Service_ type is a _Task_ of _ScalaZ_ in other to can do async tasks and using a _Xor_ of
+Our _TaskService_ type is a _Task_ of _ScalaZ_ in other to can do async tasks and using a _Xor_ of
 _Cats_ for exceptions and value of the method
 
 For example, a method of our Job can have calls to Ui and Services:
  
 ```scala
-  def loadAnimals: Service[Throwable, Unit] = {
+  def loadAnimals: TaskService[Unit] = {
     for {
       _ <- uiActions.showLoading()
       animals <- apiService.getAnimals()
@@ -51,7 +51,7 @@ In the activity we can do that:
 ```scala
 val tasks = (jobs.initialize |@| jobs.loadAnimals).tupled
 
-tasks.value.resolveOr(_ => jobs.showError)
+tasks.resolveServiceOr(_ => jobs.showError)
 ``` 
    
 We can compose _initialize_ and _loadAnimals_ in a _Applicative_ and using _TaskOps_ (defined in _commons_ 

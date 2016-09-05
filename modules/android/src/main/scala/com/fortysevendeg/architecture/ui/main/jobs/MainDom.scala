@@ -1,10 +1,9 @@
-package com.fortysevendeg.architecture.ui.main.transformations
+package com.fortysevendeg.architecture.ui.main.jobs
 
-import com.fortysevendeg.architecture.ui.main.jobs.MainJobs
 import com.fortysevendeg.architecture.{TR, TypedFindView}
 import macroid.ActivityContextWrapper
 
-case class MainBinding(jobs: MainJobs, fv: TypedFindView)(implicit val contextWrapper: ActivityContextWrapper) {
+case class MainDom(fv: TypedFindView)(implicit val contextWrapper: ActivityContextWrapper) {
 
   lazy val content = Option(fv.findView(TR.content))
 

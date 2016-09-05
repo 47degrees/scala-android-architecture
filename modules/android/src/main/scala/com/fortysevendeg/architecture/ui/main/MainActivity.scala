@@ -3,10 +3,10 @@ package com.fortysevendeg.architecture.ui.main
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import cats.implicits._
-import com.fortysevendeg.architecture.ui.main.jobs.MainJobs
+import com.fortysevendeg.architecture.ui.main.jobs.{MainDom, MainJobs, MainListUiActions}
 import com.fortysevendeg.architecture.{R, TypedFindView}
 import commons.TaskService._
-import commons.TasksOps._
+import commons.TaskServiceOps._
 import macroid.Contexts
 
 class MainActivity
@@ -14,7 +14,11 @@ class MainActivity
   with TypedFindView
   with Contexts[AppCompatActivity] {
 
-  implicit lazy val jobs = new MainJobs(this)
+  lazy val dom = MainDom(this)
+
+  lazy val ui = MainListUiActions(dom)
+
+  lazy val jobs = new MainJobs(ui)
 
   override def onCreate(savedInstanceState: Bundle) = {
     super.onCreate(savedInstanceState)
@@ -23,7 +27,7 @@ class MainActivity
 
     val tasks = (jobs.initialize |@| jobs.loadAnimals).tupled
 
-    tasks.value.resolveOr(_ => jobs.showError)
+    tasks.resolveServiceOr(_ => jobs.showError)
 
   }
 

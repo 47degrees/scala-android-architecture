@@ -1,4 +1,4 @@
-package com.fortysevendeg.architecture.ui.main.transformations
+package com.fortysevendeg.architecture.ui.main.jobs
 
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
@@ -15,33 +15,43 @@ import macroid._
 
 import scala.language.postfixOps
 
-trait MainListUiActionsImpl {
+case class MainListUiActions(dom: MainDom)(implicit contextWrapper: ContextWrapper) {
 
-  self: MainBinding =>
-
-  def init(): TaskService[Unit] =
+  def init(jobs: MainJobs): TaskService[Unit] =
     (Ui {
-      (contextWrapper.original.get, toolBar) match {
+      (contextWrapper.original.get, dom.toolBar) match {
         case (Some(activity: AppCompatActivity), Some(tb)) =>
           activity.setSupportActionBar(tb)
         case _ =>
       }
     } ~
-      (recycler
+      (dom.recycler
         <~ rvFixedSize
         <~ rvLayoutManager(new GridLayoutManager(contextWrapper.bestAvailable, 2))) ~
-      (fabActionButton
+      (dom.fabActionButton
         <~ ivSrc(R.drawable.ic_add)
         <~ On.click(Ui(jobs.addItem().value.run)))).toService
 
   def loadAnimals(data: Seq[Animal]): TaskService[Unit] =
-    (recycler <~ rvAdapter(new AnimalsAdapter(data))).toService
+    (dom.recycler <~ rvAdapter(AnimalsAdapter(data))).toService
 
   def addItem(): TaskService[Unit] =
-    (content <~ vSnackbarLong(R.string.material_list_add_item)).toService
+    (dom.content <~ vSnackbarLong(R.string.material_list_add_item)).toService
 
   def displayError(): TaskService[Unit] =
-    (content <~ vSnackbarIndefinite(R.string.material_list_error)).toService
+    (dom.content <~ vSnackbarIndefinite(R.string.material_list_error)).toService
+
+  def showLoading(): TaskService[Unit] =
+    ((dom.loading <~ vVisible) ~
+      (dom.recycler <~ vGone)).toService
+
+  def showContent(): TaskService[Unit] =
+    ((dom.loading <~ vGone) ~
+      (dom.recycler <~ vVisible)).toService
+
+  def showError(): TaskService[Unit] =
+    ((dom.loading <~ vGone) ~
+      (dom.recycler <~ vGone)).toService
 
 }
 
