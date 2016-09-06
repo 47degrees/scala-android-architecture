@@ -17,17 +17,16 @@
 package com.fortysevendeg.architecture.ui.commons
 
 import commons.TaskService.TaskService
-import commons.{TaskService, XorCatchAll}
+import commons.{CatchAll, TaskService}
 import macroid.Ui
-
-import scalaz.concurrent.Task
+import monix.eval.Task
 
 object UiOps extends ImplicitsUiExceptions {
 
   implicit class ServiceUi(ui: Ui[Any]) {
 
     def toService: TaskService[Unit] = TaskService {
-      Task(XorCatchAll[UiException](ui.run))
+      Task(CatchAll[UiException](ui.run))
     }
 
   }

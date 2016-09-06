@@ -18,7 +18,7 @@ import Libraries.android._
 import Libraries.cats._
 import Libraries.json._
 import Libraries.macroid._
-import Libraries.scalaz._
+import Libraries.monix._
 import Libraries.test._
 import Libraries.graphics._
 import android.Keys._
@@ -78,7 +78,7 @@ object Settings {
   lazy val basicSettings = Seq(
     scalaVersion := Versions.scalaV,
     resolvers ++= commonResolvers,
-    libraryDependencies ++= Seq(scalaz, scalazConcurrent, cats)
+    libraryDependencies ++= Seq(cats, monixTypes, monixEval)
   )
 
   lazy val duplicatedFiles = Set("AndroidManifest.xml")

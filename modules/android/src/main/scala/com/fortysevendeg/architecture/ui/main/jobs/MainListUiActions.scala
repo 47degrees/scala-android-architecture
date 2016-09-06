@@ -26,6 +26,7 @@ import com.fortysevendeg.macroid.extras.ImageViewTweaks._
 import com.fortysevendeg.macroid.extras.RecyclerViewTweaks._
 import com.fortysevendeg.macroid.extras.ViewTweaks._
 import commons.TaskService._
+import commons.TaskServiceOps._
 import macroid.FullDsl._
 import macroid._
 
@@ -46,7 +47,7 @@ case class MainListUiActions(dom: MainDom)(implicit contextWrapper: ContextWrapp
         <~ rvLayoutManager(new GridLayoutManager(contextWrapper.bestAvailable, 2))) ~
       (dom.fabActionButton
         <~ ivSrc(R.drawable.ic_add)
-        <~ On.click(Ui(jobs.addItem().value.run)))).toService
+        <~ On.click(Ui(jobs.addItem().resolveAsync())))).toService
 
   def loadAnimals(data: Seq[Animal]): TaskService[Unit] =
     (dom.recycler <~ rvAdapter(AnimalsAdapter(data))).toService

@@ -14,16 +14,16 @@
  *  limitations under the License.
  */
 
-import cats.{Functor, Monad}
 import cats.data._
+import cats.{Functor, Monad}
+import monix.eval.Task
 
-import scalaz.concurrent.Task
 import scala.language.{higherKinds, implicitConversions}
 
 package object commons {
 
   object TaskService {
-
+    
     implicit val taskFunctor = new Functor[Task] {
       override def map[A, B](fa: Task[A])(f: (A) => B): Task[B] = fa.map(f)
     }
@@ -31,17 +31,18 @@ package object commons {
     implicit val taskMonad = new Monad[Task] {
       override def flatMap[A, B](fa: Task[A])(f: (A) => Task[B]): Task[B] = fa.flatMap(f)
       override def pure[A](x: A): Task[A] = Task(x)
+      override def tailRecM[A, B](a: A)(f: (A) => Task[Either[A, B]]): Task[B] = defaultTailRecM(a)(f)
     }
 
-    type TaskService[A] = XorT[Task, ServiceException, A]
+    type TaskService[A] = EitherT[Task, ServiceException, A]
 
     trait ServiceException extends RuntimeException {
       def message: String
       def cause: Option[Throwable]
     }
 
-    def apply[A](f: Task[ServiceException Xor A]) : TaskService[A] = {
-      XorT[Task, ServiceException, A](f)
+    def apply[A](f: Task[ServiceException Either A]) : TaskService[A] = {
+      EitherT[Task, ServiceException, A](f)
     }
 
   }
