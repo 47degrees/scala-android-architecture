@@ -29,6 +29,6 @@ object Versions {
   val specs2V = "3.6.1"
   val mockitoV = "3.6.1"
   val communicatorV = "2.0.0"
-  val scalaZV = "7.1.3"
-  val catsV = "0.6.0"
+  val monixV = "2.0.0"
+  val catsV = "0.7.2"
 }
